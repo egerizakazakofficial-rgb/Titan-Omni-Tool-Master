@@ -1,5 +1,5 @@
--- Project Games | Xeno Hub: Brookhaven Full Max Tool Master
--- V3 Mobile, iOS & PC Optimized Version
+-- Project Games | Titan Omni: Tool Master
+-- V3 Mobile, iOS & PC Optimized Version (Zero Bug Edition)
 
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
@@ -9,6 +9,16 @@ local UserInputService = game:GetService("UserInputService")
 
 local LocalPlayer = Players.LocalPlayer
 local RE = ReplicatedStorage:WaitForChild("RE")
+
+-- UI Cleanup
+if CoreGui:FindFirstChild("TitanOmni_ToolMaster") then 
+    CoreGui.TitanOmni_ToolMaster:Destroy() 
+end
+
+local sg = Instance.new("ScreenGui", CoreGui)
+sg.Name = "TitanOmni_ToolMaster"
+sg.IgnoreGuiInset = true
+sg.ResetOnSpawn = false
 
 -- [EŞYA VERİTABANI]
 local toolData = {
@@ -95,14 +105,317 @@ local toolData = {
     {"GoldenBasketball", "113036122504150", "Misc"}
 }
 
--- UI Cleanup
-if CoreGui:FindFirstChild("Titan-Omni-Tool-Master") then CoreGui.Titan-Omni-Tool-Master:Destroy() end
+-- Utility: Bildirim Sistemi
+local function Notify(msg)
+    task.spawn(function()
+        local n = Instance.new("TextLabel", sg)
+        n.Size = UDim2.new(0, 220, 0, 40)
+        n.Position = UDim2.new(1, 20, 0.9, 0)
+        n.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+        n.Text = "  " .. msg
+        n.TextColor3 = Color3.fromRGB(150, 0, 255) -- Titan Moru
+        n.Font = Enum.Font.GothamBold
+        n.TextSize = 12
+        n.TextXAlignment = Enum.TextXAlignment.Left
+        Instance.new("UICorner", n).CornerRadius = UDim.new(0, 8)
+        Instance.new("UIStroke", n).Color = Color3.fromRGB(100, 0, 200)
+        
+        n:TweenPosition(UDim2.new(1, -240, 0.9, 0), "Out", "Back", 0.5)
+        task.wait(2)
+        n:TweenPosition(UDim2.new(1, 20, 0.9, 0), "In", "Back", 0.5)
+        task.wait(0.5)
+        n:Destroy()
+    end)
+end
 
-local sg = Instance.new("ScreenGui", CoreGui)
-sg.Name = "Titan-Omni-Tool-Master"
-sg.IgnoreGuiInset = true
-sg.ResetOnSpawn = false
+-- Bypass Item Fonksiyonu
+local function RequestItemMax(itemName)
+    task.spawn(function()
+        local candidates = {"GetItem", "Getİtem", "Get_Item", "GetTool", "1Too1l", "GiveItem"}
+        if RE then
+            for _, rName in ipairs(candidates) do
+                local r = RE:FindFirstChild(rName)
+                if r then
+                    pcall(function()
+                        if r:IsA("RemoteFunction") then r:InvokeServer("PickingTools", itemName)
+                        else r:FireServer("PickingTools", itemName) end
+                    end)
+                end
+            end
+        end
+        local trg = RE:FindFirstChild("1Playe1rTrigge1rEven1t") or RE:FindFirstChild("AcceptedToolToServer")
+        if trg then pcall(function() trg:FireServer("AcceptedToolToServer", itemName) end) end
+    end)
+end
 
+-- [ RESPONSIVE MAIN FRAME (Tam Uyumlu) ]
+local main = Instance.new("Frame", sg)
+main.AnchorPoint = Vector2.new(0.5, 0.5)
+main.Size = UDim2.new(0.9, 0, 0.8, 0) 
+main.Position = UDim2.new(0.5, 0, 1.5, 0)
+main.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+main.BorderSizePixel = 0
+Instance.new("UICorner", main).CornerRadius = UDim.new(0, 12)
+local mStroke = Instance.new("UIStroke", main)
+mStroke.Color = Color3.fromRGB(150, 0, 255) -- Titan Moru
+mStroke.Transparency = 0.5
+
+local constraint = Instance.new("UISizeConstraint", main)
+constraint.MaxSize = Vector2.new(620, 480) 
+constraint.MinSize = Vector2.new(300, 350)
+
+-- Header
+local header = Instance.new("Frame", main)
+header.Size = UDim2.new(1, 0, 0, 50)
+header.BackgroundTransparency = 1
+
+local title = Instance.new("TextLabel", header)
+title.Size = UDim2.new(0.5, -20, 1, 0)
+title.Position = UDim2.new(0, 20, 0, 0)
+title.Text = "TITAN OMNI <font color='#9600FF'>TOOL MASTER</font>"
+title.RichText = true
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.GothamBlack
+title.TextScaled = true 
+local tConstraint = Instance.new("UITextSizeConstraint", title)
+tConstraint.MaxTextSize = 18
+title.BackgroundTransparency = 1
+title.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Search Bar
+local searchBox = Instance.new("TextBox", header)
+searchBox.Size = UDim2.new(0.4, 0, 0, 32)
+searchBox.Position = UDim2.new(0.6, -10, 0.5, -16)
+searchBox.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+searchBox.PlaceholderText = "Search item..."
+searchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+searchBox.Font = Enum.Font.Gotham
+searchBox.TextSize = 12
+Instance.new("UICorner", searchBox).CornerRadius = UDim.new(0, 8)
+Instance.new("UIStroke", searchBox).Color = Color3.fromRGB(50, 50, 60)
+
+-- Category Bar
+local catFrame = Instance.new("ScrollingFrame", main)
+catFrame.Size = UDim2.new(1, -40, 0, 40)
+catFrame.Position = UDim2.new(0, 20, 0, 55)
+catFrame.BackgroundTransparency = 1
+catFrame.ScrollBarThickness = 0
+catFrame.ScrollingDirection = Enum.ScrollingDirection.X
+
+local catLayout = Instance.new("UIListLayout", catFrame)
+catLayout.FillDirection = Enum.FillDirection.Horizontal
+catLayout.SortOrder = Enum.SortOrder.LayoutOrder
+catLayout.Padding = UDim.new(0, 10)
+
+-- Scroll Area (Eşyalar)
+local scroll = Instance.new("ScrollingFrame", main)
+scroll.Size = UDim2.new(1, -20, 1, -170)
+scroll.Position = UDim2.new(0, 10, 0, 105)
+scroll.BackgroundTransparency = 1
+scroll.ScrollBarThickness = 4
+scroll.ScrollBarImageColor3 = Color3.fromRGB(150, 0, 255)
+
+local grid = Instance.new("UIGridLayout", scroll)
+grid.CellSize = UDim2.new(0, 90, 0, 110)
+grid.CellPadding = UDim2.new(0, 8, 0, 8)
+grid.HorizontalAlignment = Enum.HorizontalAlignment.Center
+
+-- Footer
+local footer = Instance.new("Frame", main)
+footer.Size = UDim2.new(1, 0, 0, 60)
+footer.Position = UDim2.new(0, 0, 1, -60)
+footer.BackgroundTransparency = 1
+
+local allBtn = Instance.new("TextButton", footer)
+allBtn.Size = UDim2.new(0.94, 0, 0, 40)
+allBtn.Position = UDim2.new(0.03, 0, 0, 0)
+allBtn.BackgroundColor3 = Color3.fromRGB(120, 0, 200)
+allBtn.Text = "TAKE ALL ITEMS (MAX INVENTORY)"
+allBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+allBtn.Font = Enum.Font.GothamBold
+allBtn.TextSize = 14
+Instance.new("UICorner", allBtn).CornerRadius = UDim.new(0, 8)
+
+-- Toggle Butonu
+local toggleBtn = Instance.new("ImageButton", sg)
+toggleBtn.Size = UDim2.new(0, 50, 0, 50)
+toggleBtn.Position = UDim2.new(0, 15, 0.5, -25)
+toggleBtn.BackgroundColor3 = Color3.fromRGB(10, 10, 12)
+toggleBtn.Image = "rbxassetid://125614278681229"
+Instance.new("UICorner", toggleBtn).CornerRadius = UDim.new(1, 0)
+local tStroke = Instance.new("UIStroke", toggleBtn)
+tStroke.Thickness = 2
+tStroke.Color = Color3.fromRGB(150, 0, 255)
+
+-- Fonksiyonlar ve Değişkenler
+local buttons = {}
+local currentCategory = "All"
+
+local function FilterItems()
+    local t = searchBox.Text:lower()
+    for card, info in pairs(buttons) do
+        local nameMatch = t == "" or info.name:find(t)
+        local catMatch = currentCategory == "All" or info.category == currentCategory
+        card.Visible = nameMatch and catMatch
+    end
+    scroll.CanvasPosition = Vector2.new(0,0)
+end
+
+-- Kategorileri Oluşturma
+local categories = {"All", "Weapons", "Pets", "Food", "Baby", "Tools", "Misc"}
+for _, cat in ipairs(categories) do
+    local cBtn = Instance.new("TextButton", catFrame)
+    cBtn.Size = UDim2.new(0, 80, 1, -10)
+    cBtn.BackgroundColor3 = cat == "All" and Color3.fromRGB(150, 0, 255) or Color3.fromRGB(30, 30, 35)
+    cBtn.Text = cat
+    cBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    cBtn.Font = Enum.Font.GothamBold
+    cBtn.TextSize = 11
+    Instance.new("UICorner", cBtn).CornerRadius = UDim.new(0, 6)
+    
+    cBtn.MouseButton1Click:Connect(function()
+        currentCategory = cat
+        for _, btn in ipairs(catFrame:GetChildren()) do
+            if btn:IsA("TextButton") then
+                TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(30, 30, 35)}):Play()
+            end
+        end
+        TweenService:Create(cBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(150, 0, 255)}):Play()
+        FilterItems()
+    end)
+end
+
+-- Eşyaları Yükleme
+for _, data in ipairs(toolData) do
+    local card = Instance.new("Frame", scroll)
+    card.BackgroundColor3 = Color3.fromRGB(22, 22, 26)
+    Instance.new("UICorner", card).CornerRadius = UDim.new(0, 8)
+    
+    local btn = Instance.new("ImageButton", card)
+    btn.Size = UDim2.new(1, 0, 1, 0)
+    btn.BackgroundTransparency = 1
+    
+    local img = Instance.new("ImageLabel", card)
+    img.Size = UDim2.new(0, 60, 0, 60)
+    img.Position = UDim2.new(0.5, -30, 0.05, 0)
+    img.Image = "rbxassetid://" .. data[2]
+    img.BackgroundTransparency = 1
+    
+    local lbl = Instance.new("TextLabel", card)
+    lbl.Size = UDim2.new(1, -10, 0, 35)
+    lbl.Position = UDim2.new(0, 5, 1, -35)
+    lbl.Text = data[1]
+    lbl.TextColor3 = Color3.fromRGB(200, 200, 200)
+    lbl.Font = Enum.Font.GothamSemibold
+    lbl.TextScaled = true
+    local lConstraint = Instance.new("UITextSizeConstraint", lbl)
+    lConstraint.MaxTextSize = 10
+    lbl.BackgroundTransparency = 1
+    lbl.TextWrapped = true
+
+    btn.MouseButton1Click:Connect(function()
+        RequestItemMax(data[1])
+        Notify(data[1] .. " Alındı!")
+        local tw = TweenService:Create(card, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(150, 0, 255)})
+        tw:Play()
+        tw.Completed:Connect(function()
+            TweenService:Create(card, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(22, 22, 26)}):Play()
+        end)
+    end)
+    
+    buttons[card] = {name = data[1]:lower(), category = data[3]}
+end
+
+searchBox:GetPropertyChangedSignal("Text"):Connect(FilterItems)
+
+-- Take All Logic
+allBtn.MouseButton1Click:Connect(function()
+    allBtn.Active = false
+    allBtn.Text = "İŞLENİYOR..."
+    allBtn.BackgroundColor3 = Color3.fromRGB(200, 100, 0)
+    
+    for card, info in pairs(buttons) do
+        if card.Visible then
+            RequestItemMax(info.name)
+            task.wait(0.02)
+        end
+    end
+    
+    allBtn.Text = "TAMAMLANDI!"
+    allBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 50)
+    task.wait(2)
+    allBtn.Text = "TAKE ALL ITEMS (MAX INVENTORY)"
+    allBtn.BackgroundColor3 = Color3.fromRGB(120, 0, 200)
+    allBtn.Active = true
+end)
+
+-- [ GÜVENLİ DRAG SİSTEMİ (Mobil/PC/iOS Touch Fix) ]
+local isOpen = false
+local draggingToggle = false
+
+toggleBtn.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        draggingToggle = false
+    end
+end)
+
+toggleBtn.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        draggingToggle = true
+    end
+end)
+
+toggleBtn.InputEnded:Connect(function(input)
+    if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+        if not draggingToggle then
+            isOpen = not isOpen
+            local targetPos = isOpen and UDim2.new(0.5, 0, 0.5, 0) or UDim2.new(0.5, 0, 1.5, 0)
+            main:TweenPosition(targetPos, "Out", "Quart", 0.5, true)
+        end
+        draggingToggle = false
+    end
+end)
+
+local function MakeDraggable(obj)
+    local dragging, dragInput, dragStart, startPos
+    obj.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = obj.Position
+        end
+    end)
+    obj.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
+    end)
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - dragStart
+            obj.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end)
+    obj.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+        end
+    end)
+end
+
+MakeDraggable(main)
+MakeDraggable(toggleBtn)
+
+-- Canvas Resize Update
+catFrame.CanvasSize = UDim2.new(0, catLayout.AbsoluteContentSize.X + 20, 0, 0)
+scroll.CanvasSize = UDim2.new(0, 0, 0, grid.AbsoluteContentSize.Y + 20)
+
+grid:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+    scroll.CanvasSize = UDim2.new(0, 0, 0, grid.AbsoluteContentSize.Y + 20)
+end)
+
+print("Titan Omni Tool Master Loaded | Zero Bug Cross-Platform Version")
+Notify("Titan Omni Yüklendi! (Mobil/PC)")
 -- Utility: Bildirim Sistemi
 local function Notify(msg)
     task.spawn(function()
