@@ -1,5 +1,5 @@
 -- Project Games | Xeno Hub: Brookhaven Full Max Tool Master
--- Optimized & Enhanced Version
+-- V2 Optimized, Categorized & Enhanced Version
 
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
@@ -10,67 +10,89 @@ local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 local RE = ReplicatedStorage:WaitForChild("RE")
 
--- Veri Seti (Orijinal liste korundu)
+-- Eşyalar ve Kategoriler (Orijinal ID'ler korundu, Kategoriler eklendi)
 local toolData = {
-    {"Phone", "101867416997761"}, {"Tablet", "90160277045170"}, {"PropMaker", "14240155280"}, {"ShoppingCart", "4689532181"},
-    {"GeigerCounter", "89795578399634"}, {"Laptop", "105485792978074"}, {"Paperbag", "5177680375"}, {"Sign", "14240155925"},
-    {"Envelope", "14240155098"}, {"Newspaper", "120613797879581"}, {"Book", "5211786405"}, {"Score Card", "86665145459798"},
-    {"Paper", "6431718392"}, {"ClipBoard", "4551084336"}, {"BabyGirl", "4529249377"}, {"BabyBoy", "4529249187"},
-    {"Ticket", "14240155516"}, {"Licence", "14240156176"}, {"BabyBottle", "5528668898"}, {"BabyRattle", "96798262620700"},
-    {"Stroller", "71578527601743"}, {"Glider", "98822276774024"}, {"BabyMonkey", "5528668413"}, {"Wagon", "6607753154"},
-    {"Medicine", "11450993492"}, {"Stethoscope", "4678807315"}, {"Stretcher", "4826313379"}, {"Ear", "4689446576"},
-    {"Toothbrush", "5484924743"}, {"Hairbrush", "5480682123"}, {"PlaneTicket", "6170344779"}, {"CarryOn", "6100222503"},
-    {"Trophy", "6431694637"}, {"SWATShield", "5211788217"}, {"Cuffs", "4531411830"}, {"Taser", "5211787934"},
-    {"AnimalCatBlack", "17856913879"}, {"AnimalCatBrown", "17856930109"}, {"AnimalKittenBlack", "17856911261"},
-    {"AnimalCatWhite", "17856916690"}, {"AnimalCatGrey", "17856927741"}, {"AnimalCatTan", "17856924416"},
-    {"AnimalKittenBrown", "17856886266"}, {"AnimalKittenTan", "17856906911"}, {"AnimalKittenGrey", "17856900207"},
-    {"AnimalKittenWhite", "17856919942"}, {"AnimalDogBlack", "17856867122"}, {"AnimalDogBrown", "17856881244"},
-    {"AnimalDogGrey", "17856877859"}, {"AnimalDogTan", "17856889339"}, {"AnimalPuppyTan", "17856898006"},
-    {"AnimalDogWhite", "17856875893"}, {"AnimalPuppyBrown", "17856870172"}, {"AnimalPuppyBlack", "17856903315"},
-    {"AnimalPuppyWhite", "17856960492"}, {"AnimalKittenCarrier", "17857028112"}, {"AnimalPuppyGrey", "17856892104"},
-    {"AnimalCatCarrier", "17857003942"}, {"AnimalPuppyCarrier", "17857022348"}, {"MiniUZI", "123215789058196"},
-    {"GlockBrown", "4529288285"}, {"GoldenUZI", "131951289897937"}, {"Glock", "4529287960"}, {"AA-12", "125575192935487"},
-    {"Shotgun", "4529288149"}, {"AUG", "111702002546721"}, {"Assault", "4529288610"}, {"Sniper", "15208272302"},
-    {"SVD", "102837151394759"}, {"Bow", "15343371329"}, {"HandheldFan", "132176036216698"}, {"Katana", "115730183608326"},
-    {"SwordWood", "15343364442"}, {"Bomb", "4587924290"}, {"DuffleBag", "4529193474"}, {"DuffleBagMoney", "4587924680"},
-    {"CreditCardGirl", "4557319090"}, {"CreditCardBoy", "4557319271"}, {"Money", "4535110571"}, {"Binocks", "6351262697"},
-    {"HandRadio", "8252122471"}, {"Candle", "118106422282857"}, {"FlashLight", "4551018166"}, {"Marshmello", "6714351549"},
-    {"SleepingBag", "6714550577"}, {"TinCup", "106023599910600"}, {"GuardTorch", "103689881596502"}, {"ElphabasBroom", "75573442159354"},
-    {"GlendaWand", "110559529645837"}, {"Sparkler", "74460521999501"}, {"Lego2026_Burger", "130079646073294"},
-    {"Lego2026_Fries", "92757346920261"}, {"Lego2026_Ketchup", "96376426349737"}, {"Balloon", "6239256158"},
-    {"Umbrella", "4529231608"}, {"FishingRod", "9781746828"}, {"Present", "13470272651"}, {"Boombox", "113077324050977"},
-    {"PowderCompactBrush", "109627670539403"}, {"Roses", "135845372520712"}, {"Lipstick", "126685850880651"},
-    {"Microphone", "4622190558"}, {"DSLR Camera", "120141377180284"}, {"ClapperBoard", "125574480937050"},
-    {"Megaphone", "134802530774736"}, {"Camcorder", "4529167642"}, {"Guitar", "4024378214"}, {"ElectricGuitar", "4024378910"},
-    {"Wrench", "90951449674748"}, {"Axe", "73101564394231"}, {"Hammer", "86143538303644"}, {"StopSign", "14240222574"},
-    {"Chainsaw", "106866993611426"}, {"FireX", "83961417899838"}, {"GlowingBatons", "100620081844468"}, {"Cones", "16101387234"},
-    {"CandyBasket", "113675744495521"}, {"Ladder", "5211862721"}, {"LawnMower", "5480682683"}, {"Wheelbarrow", "123325583006450"},
-    {"WateringCan", "5480684131"}, {"Bucket", "4617189290"}, {"Shovel", "4617189079"}, {"HorseBrush", "133053442613394"},
-    {"Box", "14240155698"}, {"LaundryBasket", "14982217383"}, {"WhistleAndRefereeCards", "127232883331614"},
-    {"Mop", "4539801080"}, {"Vacuum", "5480918435"}, {"SoccerBall", "4598172149"}, {"YogaMat", "96519000177029"},
-    {"Basketball", "138912255107273"}, {"Weights", "7336231299"}, {"FoamFinger", "72696622652247"},
-    {"Baseball", "72981868422413"}, {"SnackBox", "84678743055156"}, {"TakeOutPizza", "6239256493"},
-    {"TakeOutHappyBurger", "14240154894"}, {"TakeOut", "14240154561"}, {"FoodTray", "114665333418423"},
-    {"FoodCart", "11556980707"}, {"ChineseTray", "94461352424653"}, {"PrisonTray", "10897693168"},
-    {"BurgerTray", "4550403278"}, {"SubwayTray", "114536026264489"}, {"LunchPlate1", "7550751718"},
-    {"BreakfestPlate1", "7550751455"}, {"Banana", "4548051724"}, {"DinnerPlate1", "7550749793"},
-    {"DinnerPlate2", "7550751199"}, {"AppleGreen", "4549503602"}, {"Apple", "4549503313"},
-    {"DinnerPlate3", "13268293800"}, {"Popcorn", "5814230667"}, {"Hamburger", "5211787314"},
-    {"Taco", "7550751862"}, {"Sandwich", "7550750347"}, {"Guda", "7550749589"}, {"Burrito", "7550749946"},
-    {"HotDog", "7550750852"}, {"ChipsGreen", "126536042378581"}, {"ChipsRed", "133850941133176"},
-    {"Waffle", "5664163065"}, {"MuffinBlueBerry", "7550751581"}, {"Donut", "7550750449"},
-    {"CookieChip", "7550750055"}, {"YummyBread", "7550750594"}, {"Cupcake", "77003538294149"},
-    {"DessertTray", "133540269233094"}, {"Pretzel", "7550751347"}, {"Pizza", "4549492371"},
-    {"CakePink", "6239256320"}, {"CottonCandyPurple", "11556178274"}, {"ChocolateBar", "108380912226369"},
-    {"ShakeChocolate", "7550750989"}, {"Icecream", "4548053271"}, {"BoxOfChocolates", "121167784535717"},
-    {"FrapStrawberry", "7550750255"}, {"FrapMint", "7550750171"}, {"Mocha", "7550750730"},
-    {"Bloxaide", "4548051862"}, {"BottledWater", "5480684668"}, {"Milk", "97633368074855"},
-    {"Coke", "89078412261400"}, {"SprayCan", "131454692425438"}, {"PaintRoller", "101120672760262"},
-    {"BrushAndPalette", "89103349463676"}, {"SketchBook", "97989223881681"}, {"Snowboard", "132946179114252"},
-    {"Skis", "125857076047100"}, {"MoneyGun", "81528137093609"}, {"PowerKeyCard", "6850586721"},
-    {"WhackABunnyMallet", "75050599596651"}, {"EggLauncher", "75444008773742"}, {"SnowballCannon", "74303526699298"},
-    {"UraniumRod", "107444382311291"}, {"NuclearBarrel", "123251188398917"}, {"Cannon", "73694986175355"},
-    {"Easter2026SpringShuffler", "111285951918689"}, {"GoldenBasketball", "113036122504150"}, {"BabyHippo", "5528669302"},
+    -- [ WEAPONS ]
+    {"MiniUZI", "123215789058196", "Weapons"}, {"GlockBrown", "4529288285", "Weapons"}, {"GoldenUZI", "131951289897937", "Weapons"},
+    {"Glock", "4529287960", "Weapons"}, {"AA-12", "125575192935487", "Weapons"}, {"Shotgun", "4529288149", "Weapons"},
+    {"AUG", "111702002546721", "Weapons"}, {"Assault", "4529288610", "Weapons"}, {"Sniper", "15208272302", "Weapons"},
+    {"SVD", "102837151394759", "Weapons"}, {"Bow", "15343371329", "Weapons"}, {"Katana", "115730183608326", "Weapons"},
+    {"SwordWood", "15343364442", "Weapons"}, {"Bomb", "4587924290", "Weapons"}, {"SWATShield", "5211788217", "Weapons"},
+    {"Cuffs", "4531411830", "Weapons"}, {"Taser", "5211787934", "Weapons"}, {"Cannon", "73694986175355", "Weapons"},
+    {"SnowballCannon", "74303526699298", "Weapons"},
+
+    -- [ PETS ]
+    {"AnimalCatBlack", "17856913879", "Pets"}, {"AnimalCatBrown", "17856930109", "Pets"}, {"AnimalKittenBlack", "17856911261", "Pets"},
+    {"AnimalCatWhite", "17856916690", "Pets"}, {"AnimalCatGrey", "17856927741", "Pets"}, {"AnimalCatTan", "17856924416", "Pets"},
+    {"AnimalKittenBrown", "17856886266", "Pets"}, {"AnimalKittenTan", "17856906911", "Pets"}, {"AnimalKittenGrey", "17856900207", "Pets"},
+    {"AnimalKittenWhite", "17856919942", "Pets"}, {"AnimalDogBlack", "17856867122", "Pets"}, {"AnimalDogBrown", "17856881244", "Pets"},
+    {"AnimalDogGrey", "17856877859", "Pets"}, {"AnimalDogTan", "17856889339", "Pets"}, {"AnimalPuppyTan", "17856898006", "Pets"},
+    {"AnimalDogWhite", "17856875893", "Pets"}, {"AnimalPuppyBrown", "17856870172", "Pets"}, {"AnimalPuppyBlack", "17856903315", "Pets"},
+    {"AnimalPuppyWhite", "17856960492", "Pets"}, {"AnimalKittenCarrier", "17857028112", "Pets"}, {"AnimalPuppyGrey", "17856892104", "Pets"},
+    {"AnimalCatCarrier", "17857003942", "Pets"}, {"AnimalPuppyCarrier", "17857022348", "Pets"},
+
+    -- [ FOOD ]
+    {"Lego2026_Burger", "130079646073294", "Food"}, {"Lego2026_Fries", "92757346920261", "Food"}, {"Lego2026_Ketchup", "96376426349737", "Food"},
+    {"SnackBox", "84678743055156", "Food"}, {"TakeOutPizza", "6239256493", "Food"}, {"TakeOutHappyBurger", "14240154894", "Food"},
+    {"TakeOut", "14240154561", "Food"}, {"FoodTray", "114665333418423", "Food"}, {"FoodCart", "11556980707", "Food"},
+    {"ChineseTray", "94461352424653", "Food"}, {"PrisonTray", "10897693168", "Food"}, {"BurgerTray", "4550403278", "Food"},
+    {"SubwayTray", "114536026264489", "Food"}, {"LunchPlate1", "7550751718", "Food"}, {"BreakfestPlate1", "7550751455", "Food"},
+    {"Banana", "4548051724", "Food"}, {"DinnerPlate1", "7550749793", "Food"}, {"DinnerPlate2", "7550751199", "Food"},
+    {"AppleGreen", "4549503602", "Food"}, {"Apple", "4549503313", "Food"}, {"DinnerPlate3", "13268293800", "Food"},
+    {"Popcorn", "5814230667", "Food"}, {"Hamburger", "5211787314", "Food"}, {"Taco", "7550751862", "Food"},
+    {"Sandwich", "7550750347", "Food"}, {"Guda", "7550749589", "Food"}, {"Burrito", "7550749946", "Food"},
+    {"HotDog", "7550750852", "Food"}, {"ChipsGreen", "126536042378581", "Food"}, {"ChipsRed", "133850941133176", "Food"},
+    {"Waffle", "5664163065", "Food"}, {"MuffinBlueBerry", "7550751581", "Food"}, {"Donut", "7550750449", "Food"},
+    {"CookieChip", "7550750055", "Food"}, {"YummyBread", "7550750594", "Food"}, {"Cupcake", "77003538294149", "Food"},
+    {"DessertTray", "133540269233094", "Food"}, {"Pretzel", "7550751347", "Food"}, {"Pizza", "4549492371", "Food"},
+    {"CakePink", "6239256320", "Food"}, {"CottonCandyPurple", "11556178274", "Food"}, {"ChocolateBar", "108380912226369", "Food"},
+    {"ShakeChocolate", "7550750989", "Food"}, {"Icecream", "4548053271", "Food"}, {"BoxOfChocolates", "121167784535717", "Food"},
+    {"FrapStrawberry", "7550750255", "Food"}, {"FrapMint", "7550750171", "Food"}, {"Mocha", "7550750730", "Food"},
+    {"Bloxaide", "4548051862", "Food"}, {"BottledWater", "5480684668", "Food"}, {"Milk", "97633368074855", "Food"},
+    {"Coke", "89078412261400", "Food"}, {"Marshmello", "6714351549", "Food"},
+
+    -- [ BABY ]
+    {"BabyGirl", "4529249377", "Baby"}, {"BabyBoy", "4529249187", "Baby"}, {"BabyBottle", "5528668898", "Baby"},
+    {"BabyRattle", "96798262620700", "Baby"}, {"Stroller", "71578527601743", "Baby"}, {"BabyMonkey", "5528668413", "Baby"},
+    {"BabyHippo", "5528669302", "Baby"},
+
+    -- [ TOOLS ]
+    {"Wrench", "90951449674748", "Tools"}, {"Axe", "73101564394231", "Tools"}, {"Hammer", "86143538303644", "Tools"},
+    {"Chainsaw", "106866993611426", "Tools"}, {"FireX", "83961417899838", "Tools"}, {"Ladder", "5211862721", "Tools"},
+    {"LawnMower", "5480682683", "Tools"}, {"Wheelbarrow", "123325583006450", "Tools"}, {"WateringCan", "5480684131", "Tools"},
+    {"Bucket", "4617189290", "Tools"}, {"Shovel", "4617189079", "Tools"}, {"HorseBrush", "133053442613394", "Tools"},
+    {"Mop", "4539801080", "Tools"}, {"Vacuum", "5480918435", "Tools"}, {"PaintRoller", "101120672760262", "Tools"},
+    {"SprayCan", "131454692425438", "Tools"}, {"BrushAndPalette", "89103349463676", "Tools"}, {"GeigerCounter", "89795578399634", "Tools"},
+    {"FlashLight", "4551018166", "Tools"}, {"GuardTorch", "103689881596502", "Tools"},
+
+    -- [ MISC ] (Geri kalan her şey)
+    {"Phone", "101867416997761", "Misc"}, {"Tablet", "90160277045170", "Misc"}, {"PropMaker", "14240155280", "Misc"},
+    {"ShoppingCart", "4689532181", "Misc"}, {"Laptop", "105485792978074", "Misc"}, {"Paperbag", "5177680375", "Misc"},
+    {"Sign", "14240155925", "Misc"}, {"Envelope", "14240155098", "Misc"}, {"Newspaper", "120613797879581", "Misc"},
+    {"Book", "5211786405", "Misc"}, {"Score Card", "86665145459798", "Misc"}, {"Paper", "6431718392", "Misc"},
+    {"ClipBoard", "4551084336", "Misc"}, {"Ticket", "14240155516", "Misc"}, {"Licence", "14240156176", "Misc"},
+    {"Glider", "98822276774024", "Misc"}, {"Wagon", "6607753154", "Misc"}, {"Medicine", "11450993492", "Misc"},
+    {"Stethoscope", "4678807315", "Misc"}, {"Stretcher", "4826313379", "Misc"}, {"Ear", "4689446576", "Misc"},
+    {"Toothbrush", "5484924743", "Misc"}, {"Hairbrush", "5480682123", "Misc"}, {"PlaneTicket", "6170344779", "Misc"},
+    {"CarryOn", "6100222503", "Misc"}, {"Trophy", "6431694637", "Misc"}, {"HandheldFan", "132176036216698", "Misc"},
+    {"DuffleBag", "4529193474", "Misc"}, {"DuffleBagMoney", "4587924680", "Misc"}, {"CreditCardGirl", "4557319090", "Misc"},
+    {"CreditCardBoy", "4557319271", "Misc"}, {"Money", "4535110571", "Misc"}, {"Binocks", "6351262697", "Misc"},
+    {"HandRadio", "8252122471", "Misc"}, {"Candle", "118106422282857", "Misc"}, {"SleepingBag", "6714550577", "Misc"},
+    {"TinCup", "106023599910600", "Misc"}, {"ElphabasBroom", "75573442159354", "Misc"}, {"GlendaWand", "110559529645837", "Misc"},
+    {"Sparkler", "74460521999501", "Misc"}, {"Balloon", "6239256158", "Misc"}, {"Umbrella", "4529231608", "Misc"},
+    {"FishingRod", "9781746828", "Misc"}, {"Present", "13470272651", "Misc"}, {"Boombox", "113077324050977", "Misc"},
+    {"PowderCompactBrush", "109627670539403", "Misc"}, {"Roses", "135845372520712", "Misc"}, {"Lipstick", "126685850880651", "Misc"},
+    {"Microphone", "4622190558", "Misc"}, {"DSLR Camera", "120141377180284", "Misc"}, {"ClapperBoard", "125574480937050", "Misc"},
+    {"Megaphone", "134802530774736", "Misc"}, {"Camcorder", "4529167642", "Misc"}, {"Guitar", "4024378214", "Misc"},
+    {"ElectricGuitar", "4024378910", "Misc"}, {"StopSign", "14240222574", "Misc"}, {"GlowingBatons", "100620081844468", "Misc"},
+    {"Cones", "16101387234", "Misc"}, {"CandyBasket", "113675744495521", "Misc"}, {"Box", "14240155698", "Misc"},
+    {"LaundryBasket", "14982217383", "Misc"}, {"WhistleAndRefereeCards", "127232883331614", "Misc"}, {"SoccerBall", "4598172149", "Misc"},
+    {"YogaMat", "96519000177029", "Misc"}, {"Basketball", "138912255107273", "Misc"}, {"Weights", "7336231299", "Misc"},
+    {"FoamFinger", "72696622652247", "Misc"}, {"Baseball", "72981868422413", "Misc"}, {"SketchBook", "97989223881681", "Misc"},
+    {"Snowboard", "132946179114252", "Misc"}, {"Skis", "125857076047100", "Misc"}, {"MoneyGun", "81528137093609", "Misc"},
+    {"PowerKeyCard", "6850586721", "Misc"}, {"WhackABunnyMallet", "75050599596651", "Misc"}, {"EggLauncher", "75444008773742", "Misc"},
+    {"UraniumRod", "107444382311291", "Misc"}, {"NuclearBarrel", "123251188398917", "Misc"}, {"Easter2026SpringShuffler", "111285951918689", "Misc"},
+    {"GoldenBasketball", "113036122504150", "Misc"}
 }
 
 -- UI Cleanup
@@ -84,18 +106,18 @@ sg.IgnoreGuiInset = true
 local function Notify(msg)
     task.spawn(function()
         local n = Instance.new("TextLabel", sg)
-        n.Size = UDim2.new(0, 200, 0, 40)
+        n.Size = UDim2.new(0, 220, 0, 40)
         n.Position = UDim2.new(1, 20, 0.9, 0)
         n.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
         n.Text = "  " .. msg
-        n.TextColor3 = Color3.fromRGB(130, 0, 255)
+        n.TextColor3 = Color3.fromRGB(0, 200, 255)
         n.Font = Enum.Font.GothamBold
         n.TextSize = 12
         n.TextXAlignment = Enum.TextXAlignment.Left
         Instance.new("UICorner", n).CornerRadius = UDim.new(0, 8)
-        Instance.new("UIStroke", n).Color = Color3.fromRGB(130, 0, 255)
+        Instance.new("UIStroke", n).Color = Color3.fromRGB(0, 150, 255)
         
-        n:TweenPosition(UDim2.new(1, -220, 0.9, 0), "Out", "Back", 0.5)
+        n:TweenPosition(UDim2.new(1, -240, 0.9, 0), "Out", "Back", 0.5)
         task.wait(2)
         n:TweenPosition(UDim2.new(1, 20, 0.9, 0), "In", "Back", 0.5)
         task.wait(0.5)
@@ -103,6 +125,268 @@ local function Notify(msg)
     end)
 end
 
+-- Orijinal Bypass Fonksiyonu
+local function RequestItemMax(itemName)
+    task.spawn(function()
+        local candidates = {"GetItem", "Getİtem", "Get_Item", "GetTool", "1Too1l", "GiveItem"}
+        local TargetRemotes = {
+            "1Mail1y", "1Message1s", "1Mobil1e", "1NoMoto1rVehicle1s", "1Pas1s", "1Playe1rTrigge1rEven1t", "1Player1sCa1r", 
+            "1Player1sHous1e", "1Player1sHous1eChoic1e", "1Privat1eServe1rMessage1s", "1RFHous1eEven1t", "1RFNam1eColo1r", 
+            "1RFNam1eTex1t", "1Time1rEven1t", "1Updat1eAvata1r", "1Weathe1r", "ToggleLockState", 
+            "ToggleHeadlights", "ToggleOnFire", "ToggleVehicleMusic", "ToggleEmergencyLights", "ToggleEmergencySiren", 
+            "ToggleEngineSmoke", "ToggleHazardLights", "SetVehicleState", "SetMaxSpeed", "Wear", "WearBundle", 
+            "WearOutfit", "ChangeCharacterBody", "ChangePlayerToAvatar", "ChangeBodyColor"
+        }
+        if RE then
+            for _, rName in ipairs(candidates) do
+                local r = RE:FindFirstChild(rName)
+                if r then
+                    pcall(function()
+                        if r:IsA("RemoteFunction") then r:InvokeServer("PickingTools", itemName)
+                        else r:FireServer("PickingTools", itemName) end
+                    end)
+                end
+            end
+        end
+        local trg = RE:FindFirstChild("1Playe1rTrigge1rEven1t") or RE:FindFirstChild("AcceptedToolToServer")
+        if trg then pcall(function() trg:FireServer("AcceptedToolToServer", itemName) end) end
+    end)
+end
+
+-- Toggle Butonu
+local toggleBtn = Instance.new("ImageButton", sg)
+toggleBtn.Size = UDim2.new(0, 55, 0, 55)
+toggleBtn.Position = UDim2.new(0, 15, 0.5, -27)
+toggleBtn.BackgroundColor3 = Color3.fromRGB(10, 10, 12)
+toggleBtn.Image = "rbxassetid://125614278681229"
+Instance.new("UICorner", toggleBtn).CornerRadius = UDim.new(1, 0)
+local tStroke = Instance.new("UIStroke", toggleBtn)
+tStroke.Thickness = 2
+tStroke.Color = Color3.fromRGB(0, 150, 255)
+
+-- Main Frame (Büyütüldü)
+local main = Instance.new("Frame", sg)
+main.Size = UDim2.new(0, 620, 0, 480)
+main.Position = UDim2.new(0.5, -310, 1.2, 0)
+main.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+main.BorderSizePixel = 0
+Instance.new("UICorner", main).CornerRadius = UDim.new(0, 12)
+local mStroke = Instance.new("UIStroke", main)
+mStroke.Color = Color3.fromRGB(0, 150, 255)
+mStroke.Transparency = 0.5
+
+-- Header
+local header = Instance.new("Frame", main)
+header.Size = UDim2.new(1, 0, 0, 50)
+header.BackgroundTransparency = 1
+
+local title = Instance.new("TextLabel", header)
+title.Size = UDim2.new(0, 250, 1, 0)
+title.Position = UDim2.new(0, 20, 0, 0)
+title.Text = "XENO HUB <font color='#0096FF'>V2 MAX</font>"
+title.RichText = true
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.GothamBlack
+title.TextSize = 20
+title.BackgroundTransparency = 1
+title.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Search Bar
+local searchBox = Instance.new("TextBox", header)
+searchBox.Size = UDim2.new(0, 180, 0, 32)
+searchBox.Position = UDim2.new(1, -200, 0.5, -16)
+searchBox.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+searchBox.PlaceholderText = "Search item..."
+searchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+searchBox.Font = Enum.Font.Gotham
+searchBox.TextSize = 12
+Instance.new("UICorner", searchBox).CornerRadius = UDim.new(0, 8)
+Instance.new("UIStroke", searchBox).Color = Color3.fromRGB(50, 50, 60)
+
+-- Category Bar
+local catFrame = Instance.new("ScrollingFrame", main)
+catFrame.Size = UDim2.new(1, -40, 0, 40)
+catFrame.Position = UDim2.new(0, 20, 0, 55)
+catFrame.BackgroundTransparency = 1
+catFrame.ScrollBarThickness = 0
+catFrame.ScrollingDirection = Enum.ScrollingDirection.X
+
+local catLayout = Instance.new("UIListLayout", catFrame)
+catLayout.FillDirection = Enum.FillDirection.Horizontal
+catLayout.SortOrder = Enum.SortOrder.LayoutOrder
+catLayout.Padding = UDim.new(0, 10)
+
+-- Scroll Area (Eşyalar)
+local scroll = Instance.new("ScrollingFrame", main)
+scroll.Size = UDim2.new(1, -20, 1, -170)
+scroll.Position = UDim2.new(0, 10, 0, 105)
+scroll.BackgroundTransparency = 1
+scroll.ScrollBarThickness = 4
+scroll.ScrollBarImageColor3 = Color3.fromRGB(0, 150, 255)
+
+local grid = Instance.new("UIGridLayout", scroll)
+grid.CellSize = UDim2.new(0, 110, 0, 130)
+grid.CellPadding = UDim2.new(0, 8, 0, 8)
+grid.HorizontalAlignment = Enum.HorizontalAlignment.Center
+
+-- Footer
+local footer = Instance.new("Frame", main)
+footer.Size = UDim2.new(1, 0, 0, 60)
+footer.Position = UDim2.new(0, 0, 1, -60)
+footer.BackgroundTransparency = 1
+
+local allBtn = Instance.new("TextButton", footer)
+allBtn.Size = UDim2.new(0.94, 0, 0, 40)
+allBtn.Position = UDim2.new(0.03, 0, 0, 0)
+allBtn.BackgroundColor3 = Color3.fromRGB(0, 100, 255)
+allBtn.Text = "TAKE ALL ITEMS (MAX INVENTORY)"
+allBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+allBtn.Font = Enum.Font.GothamBold
+allBtn.TextSize = 14
+Instance.new("UICorner", allBtn).CornerRadius = UDim.new(0, 8)
+
+-- Fonksiyonlar ve Değişkenler
+local buttons = {}
+local currentCategory = "All"
+
+local function FilterItems()
+    local t = searchBox.Text:lower()
+    for card, info in pairs(buttons) do
+        local nameMatch = t == "" or info.name:find(t)
+        local catMatch = currentCategory == "All" or info.category == currentCategory
+        card.Visible = nameMatch and catMatch
+    end
+    scroll.CanvasPosition = Vector2.new(0,0)
+end
+
+-- Kategorileri Oluşturma
+local categories = {"All", "Weapons", "Pets", "Food", "Baby", "Tools", "Misc"}
+for _, cat in ipairs(categories) do
+    local cBtn = Instance.new("TextButton", catFrame)
+    cBtn.Size = UDim2.new(0, 90, 1, -10)
+    cBtn.BackgroundColor3 = cat == "All" and Color3.fromRGB(0, 150, 255) or Color3.fromRGB(30, 30, 35)
+    cBtn.Text = cat
+    cBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    cBtn.Font = Enum.Font.GothamBold
+    cBtn.TextSize = 12
+    Instance.new("UICorner", cBtn).CornerRadius = UDim.new(0, 6)
+    
+    cBtn.MouseButton1Click:Connect(function()
+        currentCategory = cat
+        for _, btn in ipairs(catFrame:GetChildren()) do
+            if btn:IsA("TextButton") then
+                TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(30, 30, 35)}):Play()
+            end
+        end
+        TweenService:Create(cBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(0, 150, 255)}):Play()
+        FilterItems()
+    end)
+end
+
+-- Eşyaları Yükleme
+for _, data in ipairs(toolData) do
+    local card = Instance.new("Frame", scroll)
+    card.BackgroundColor3 = Color3.fromRGB(22, 22, 26)
+    Instance.new("UICorner", card).CornerRadius = UDim.new(0, 10)
+    
+    local btn = Instance.new("ImageButton", card)
+    btn.Size = UDim2.new(1, 0, 1, 0)
+    btn.BackgroundTransparency = 1
+    
+    local img = Instance.new("ImageLabel", card)
+    img.Size = UDim2.new(0, 70, 0, 70)
+    img.Position = UDim2.new(0.5, -35, 0.1, 0)
+    img.Image = "rbxassetid://" .. data[2]
+    img.BackgroundTransparency = 1
+    
+    local lbl = Instance.new("TextLabel", card)
+    lbl.Size = UDim2.new(1, -10, 0, 35)
+    lbl.Position = UDim2.new(0, 5, 1, -35)
+    lbl.Text = data[1]
+    lbl.TextColor3 = Color3.fromRGB(200, 200, 200)
+    lbl.Font = Enum.Font.GothamSemibold
+    lbl.TextSize = 10
+    lbl.BackgroundTransparency = 1
+    lbl.TextWrapped = true
+
+    btn.MouseButton1Click:Connect(function()
+        RequestItemMax(data[1])
+        Notify(data[1] .. " Alındı!")
+        local tw = TweenService:Create(card, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(0, 150, 255)})
+        tw:Play()
+        tw.Completed:Connect(function()
+            TweenService:Create(card, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(22, 22, 26)}):Play()
+        end)
+    end)
+    
+    buttons[card] = {name = data[1]:lower(), category = data[3]}
+end
+
+-- Search Box Dinleyicisi
+searchBox:GetPropertyChangedSignal("Text"):Connect(FilterItems)
+
+-- Take All Logic
+allBtn.MouseButton1Click:Connect(function()
+    allBtn.Active = false
+    allBtn.Text = "İŞLENİYOR..."
+    allBtn.BackgroundColor3 = Color3.fromRGB(200, 100, 0)
+    
+    for card, info in pairs(buttons) do
+        if card.Visible then -- Sadece o anki kategorideki veya aramadaki eşyaları al (hepsini istiyorsan All kategorisinde bas)
+            RequestItemMax(info.name) -- Case-insensitive API bazen algılamazsa data[1]'i saklayabiliriz, ama bypass algılıyor
+            task.wait(0.02)
+        end
+    end
+    
+    allBtn.Text = "TAMAMLANDI!"
+    allBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 50)
+    task.wait(2)
+    allBtn.Text = "TAKE ALL ITEMS (MAX INVENTORY)"
+    allBtn.BackgroundColor3 = Color3.fromRGB(0, 100, 255)
+    allBtn.Active = true
+end)
+
+-- Toggle & Drag
+local isOpen = false
+toggleBtn.MouseButton1Click:Connect(function()
+    isOpen = not isOpen
+    main:TweenPosition(isOpen and UDim2.new(0.5, -310, 0.5, -240) or UDim2.new(0.5, -310, 1.2, 0), "Out", "Quart", 0.5, true)
+end)
+
+local function Draggable(obj)
+    local dragging, dragInput, dragStart, startPos
+    obj.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true dragStart = input.Position startPos = obj.Position
+        end
+    end)
+    obj.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then dragInput = input end
+    end)
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - dragStart
+            obj.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end)
+    obj.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end
+    end)
+end
+
+Draggable(main)
+Draggable(toggleBtn)
+
+-- Canvas Resize Update
+catFrame.CanvasSize = UDim2.new(0, catLayout.AbsoluteContentSize.X + 20, 0, 0)
+scroll.CanvasSize = UDim2.new(0, 0, 0, grid.AbsoluteContentSize.Y + 20)
+
+grid:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+    scroll.CanvasSize = UDim2.new(0, 0, 0, grid.AbsoluteContentSize.Y + 20)
+end)
+
+print("Xeno Hub V2 Max Loaded | Categorized")
+Notify("Xeno Hub V2 Yüklendi!")
 -- Bypass Fonksiyonu
 local function RequestItemMax(itemName)
     task.spawn(function()
