@@ -96,10 +96,10 @@ local toolData = {
 }
 
 -- UI Cleanup
-if CoreGui:FindFirstChild("Xeno_ToolHub") then CoreGui.Xeno_ToolHub:Destroy() end
+if CoreGui:FindFirstChild("Titan-Omni-Tool-Master") then CoreGui.Titan-Omni-Tool-Master:Destroy() end
 
 local sg = Instance.new("ScreenGui", CoreGui)
-sg.Name = "Xeno_ToolHub"
+sg.Name = "Titan-Omni-Tool-Master"
 sg.IgnoreGuiInset = true
 sg.ResetOnSpawn = false
 
